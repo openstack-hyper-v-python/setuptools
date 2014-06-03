@@ -358,7 +358,10 @@ def warn_depends_obsolete(cmd, basename, filename):
 
 def _write_requirements(stream, reqs):
     lines = yield_lines(reqs or ())
-    append_cr = lambda line: line + '\n'
+    if PY3:
+        append_cr = lambda line: line + '\n'
+    else:
+        append_cr = lambda line: line.encode('utf-8') + '\n'
     lines = map(append_cr, lines)
     stream.writelines(lines)
 
